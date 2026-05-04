@@ -26,8 +26,8 @@ public class Teacher extends AbstractEntity {
     @Column(unique = true)
     private String vat;
 
-    String firstname;
-    String lastname;
+    private String firstname;
+    private String lastname;
 
     @PrePersist
     public void initializeUUID() {
