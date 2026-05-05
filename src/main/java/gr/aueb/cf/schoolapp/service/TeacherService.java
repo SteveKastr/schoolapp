@@ -1,6 +1,6 @@
 package gr.aueb.cf.schoolapp.service;
 
-import gr.aueb.cf.schoolapp.core.exceptions.EntityAlreadyExistException;
+import gr.aueb.cf.schoolapp.core.exceptions.EntityAlreadyExistsException;
 import gr.aueb.cf.schoolapp.core.exceptions.EntityInvalidArgumentException;
 import gr.aueb.cf.schoolapp.dto.TeacherInsertDTO;
 import gr.aueb.cf.schoolapp.dto.TeacherReadOnlyDTO;
@@ -15,9 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service
-@RequiredArgsConstructor
-@Slf4j
+@Service                        // IoC Container
+@RequiredArgsConstructor        // DI
+@Slf4j                          // Logger
 public class TeacherService implements ITeacherService {
 
     private final TeacherRepository teacherRepository;
@@ -31,23 +31,25 @@ public class TeacherService implements ITeacherService {
 //    }
 
     @Override
-    @Transactional(rollbackFor = {EntityAlreadyExistException.class, EntityInvalidArgumentException.class})
-    public TeacherReadOnlyDTO saveTeacher(TeacherInsertDTO dto) throws EntityAlreadyExistException, EntityInvalidArgumentException {
+    @Transactional(rollbackFor = { EntityAlreadyExistsException.class, EntityInvalidArgumentException.class} )
+    public TeacherReadOnlyDTO saveTeacher(TeacherInsertDTO dto)
+            throws EntityAlreadyExistsException, EntityInvalidArgumentException {
+
         try {
             if (dto.vat() != null && teacherRepository.findByVat(dto.vat()).isPresent()) {
-                throw new EntityAlreadyExistException("Teacher with vat=" +dto.vat() + " already exists.");
+                throw new EntityAlreadyExistsException("Teacher with vat=" + dto.vat() + " already exists");
             }
+
             Region region = regionRepository.findById(dto.regionId())
                     .orElseThrow(() -> new EntityInvalidArgumentException("Region id=" + dto.regionId() + " invalid"));
 
             Teacher teacher = mapper.mapToTeacherEntity(dto);
             region.addTeacher(teacher);
-            teacherRepository.save(teacher);
+            teacherRepository.save(teacher);        // saved teacher
             log.info("Teacher with vat={} saved successfully", dto.vat());
             return mapper.mapToTeacherReadOnlyDTO(teacher);
-
-        } catch (EntityAlreadyExistException e) {
-            log.error("Save failed for teacher with vat={}. Teacher already exist", dto.vat(), e);
+        } catch (EntityAlreadyExistsException e) {
+            log.error("Save failed for teacher with vat={}. Teacher already exists", dto.vat(), e);     // Structured Logging
             throw e;
         } catch (EntityInvalidArgumentException e) {
             log.error("Save failed for teacher with vat={}. Region id={} invalid", dto.vat(), dto.regionId());

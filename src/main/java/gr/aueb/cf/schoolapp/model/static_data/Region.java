@@ -3,6 +3,7 @@ package gr.aueb.cf.schoolapp.model.static_data;
 import gr.aueb.cf.schoolapp.model.Teacher;
 import jakarta.persistence.*;
 import lombok.*;
+import org.yaml.snakeyaml.events.Event;
 
 import java.util.Collections;
 import java.util.HashSet;

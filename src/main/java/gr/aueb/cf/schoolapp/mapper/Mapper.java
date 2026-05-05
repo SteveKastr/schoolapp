@@ -12,7 +12,6 @@ public class Mapper {
 
     public Teacher mapToTeacherEntity(TeacherInsertDTO teacherInsertDTO) {
         return new Teacher(null, null, teacherInsertDTO.vat(), teacherInsertDTO.firstname(), teacherInsertDTO.lastname(), null);
-
     }
 
     public TeacherReadOnlyDTO mapToTeacherReadOnlyDTO(Teacher teacher) {
