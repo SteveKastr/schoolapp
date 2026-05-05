@@ -9,4 +9,6 @@ import gr.aueb.cf.schoolapp.dto.TeacherReadOnlyDTO;
 public interface ITeacherService {
     TeacherReadOnlyDTO saveTeacher(TeacherInsertDTO teacherInsertDTO)
             throws EntityAlreadyExistsException, EntityInvalidArgumentException;
+
+    public boolean isTeacherExists(String uuid);
 }
