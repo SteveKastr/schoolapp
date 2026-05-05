@@ -47,7 +47,7 @@ public class TeacherService implements ITeacherService {
             return mapper.mapToTeacherReadOnlyDTO(teacher);
 
         } catch (EntityAlreadyExistException e) {
-            log.error("Save failed for teacher with vat={}. Teacher already exist", dto.vat());
+            log.error("Save failed for teacher with vat={}. Teacher already exist", dto.vat(), e);
             throw e;
         } catch (EntityInvalidArgumentException e) {
             log.error("Save failed for teacher with vat={}. Region id={} invalid", dto.vat(), dto.regionId());
