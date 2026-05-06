@@ -105,7 +105,6 @@ public class TeacherService implements ITeacherService {
                 Region oldRegion = teacher.getRegion();
                 if (oldRegion != null) {
                     oldRegion.removeTeacher(teacher);
-                    region.addTeacher(teacher);
                 }
                 region.addTeacher(teacher);
             }

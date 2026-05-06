@@ -75,7 +75,7 @@ public class TeacherController {
         }
     }
 
-    @GetMapping({ "","/"})
+    @GetMapping({ "","/" })
     public String getPaginatedTeachers(@PageableDefault(page = 0, size = 5, sort = "lastname") Pageable pageable,
                                        Model model) {
 
@@ -107,7 +107,7 @@ public class TeacherController {
         return "teacher-edit";
     }
 
-    @PostMapping("/edit/")
+    @PostMapping("/edit")
     public String updateTeacher(@Valid @ModelAttribute("teacherEditDTO") TeacherEditDTO teacherEditDTO,
                                 BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
         if (bindingResult.hasErrors()) {
