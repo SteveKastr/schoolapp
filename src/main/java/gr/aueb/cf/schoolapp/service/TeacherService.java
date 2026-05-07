@@ -16,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +29,7 @@ import java.util.UUID;
 public class TeacherService implements ITeacherService {
 
     @Override
+    @PreAuthorize("hasRole('ADMIN')")
     @Transactional(readOnly = true)
     public Page<TeacherReadOnlyDTO> getPaginatedTeachers(Pageable pageable) {
         Page<Teacher> teachersPage = teacherRepository.findAll(pageable);
@@ -36,6 +38,7 @@ public class TeacherService implements ITeacherService {
     }
 
     @Override
+    @PreAuthorize("hasAuthority('VIEW_TEACHERS')")
     @Transactional(readOnly = true)
     public Page<TeacherReadOnlyDTO> getPaginatedTeachersDeletedFalse(Pageable pageable) {
         Page<Teacher> teachersPage = teacherRepository.findAllByDeletedFalse(pageable);
@@ -54,6 +57,7 @@ public class TeacherService implements ITeacherService {
 //    }
 
     @Override
+    @PreAuthorize("hasAuthority('INSERT_TEACHER')")
     @Transactional(rollbackFor = { EntityAlreadyExistsException.class, EntityInvalidArgumentException.class} )
     public TeacherReadOnlyDTO saveTeacher(TeacherInsertDTO dto)
             throws EntityAlreadyExistsException, EntityInvalidArgumentException {
@@ -87,6 +91,7 @@ public class TeacherService implements ITeacherService {
     }
 
     @Override
+    @PreAuthorize("hasAuthority('EDIT_TEACHER')")
     @Transactional(rollbackFor = { EntityNotFoundException.class, EntityAlreadyExistsException.class, EntityInvalidArgumentException.class})
     public TeacherReadOnlyDTO updateTeacher(TeacherEditDTO dto)
             throws EntityNotFoundException, EntityAlreadyExistsException, EntityInvalidArgumentException {
@@ -133,6 +138,7 @@ public class TeacherService implements ITeacherService {
     }
 
     @Override
+    @PreAuthorize("hasAuthority('DELETE_TEACHER')")
     @Transactional(rollbackFor = EntityNotFoundException.class)
     public TeacherReadOnlyDTO deleteTeacherByUUID(UUID uuid) throws EntityNotFoundException {
         try {
@@ -150,6 +156,7 @@ public class TeacherService implements ITeacherService {
     }
 
     @Override
+    @PreAuthorize("hasRole('ADMIN')")
     @Transactional(readOnly = true)
     public TeacherEditDTO getTeacherByUUID(UUID uuid) throws EntityNotFoundException {
 
@@ -157,6 +164,23 @@ public class TeacherService implements ITeacherService {
             Teacher teacher = teacherRepository.findByUuid(uuid)
                     .orElseThrow(() -> new EntityNotFoundException("Teacher with uuid={}" + uuid + " not found."));
             log.debug("Get teacher by uuid={} returned successfully", uuid);
+            return mapper.mapToTeacherEditDTO(teacher);
+        } catch (EntityNotFoundException e) {
+            log.error("Get teacher by uuid={} failed.", uuid, e);
+            throw e;
+        }
+
+    }
+
+    @Override
+    @PreAuthorize("hasAuthority('EDIT_TEACHER')")
+    @Transactional(readOnly = true)
+    public TeacherEditDTO getTeacherByUUIDDeletedFalse(UUID uuid) throws EntityNotFoundException {
+
+        try {
+            Teacher teacher = teacherRepository.findByUuidAndDeletedFalse(uuid)
+                    .orElseThrow(() -> new EntityNotFoundException("Teacher with uuid={}" + uuid + " not found."));
+            log.debug("Get non-deleted teacher by uuid={} returned successfully", uuid);
             return mapper.mapToTeacherEditDTO(teacher);
         } catch (EntityNotFoundException e) {
             log.error("Get teacher by uuid={} failed.", uuid, e);

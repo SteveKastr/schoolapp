@@ -23,6 +23,8 @@ public interface ITeacherService {
 
     TeacherEditDTO getTeacherByUUID(UUID uuid) throws EntityNotFoundException;
 
+    TeacherEditDTO getTeacherByUUIDDeletedFalse(UUID uuid) throws EntityNotFoundException;
+
     TeacherReadOnlyDTO updateTeacher(TeacherEditDTO teacherEditDTO)
         throws EntityNotFoundException, EntityAlreadyExistsException, EntityInvalidArgumentException;
 
