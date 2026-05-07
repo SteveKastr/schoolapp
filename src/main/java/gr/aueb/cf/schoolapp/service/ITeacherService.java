@@ -15,7 +15,8 @@ public interface ITeacherService {
     TeacherReadOnlyDTO saveTeacher(TeacherInsertDTO teacherInsertDTO)
             throws EntityAlreadyExistsException, EntityInvalidArgumentException;
 
-     boolean isTeacherExists(String uuid);
+    boolean isTeacherExists(String uuid);
+
     Page<TeacherReadOnlyDTO> getPaginatedTeachers(Pageable pageable);
 
     Page<TeacherReadOnlyDTO> getPaginatedTeachersDeletedFalse(Pageable pageable);
