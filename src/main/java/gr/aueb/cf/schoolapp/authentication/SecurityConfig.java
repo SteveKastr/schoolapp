@@ -11,6 +11,8 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 @Configuration
 @RequiredArgsConstructor
@@ -18,11 +20,14 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class SecurityConfig {
 
+    private final AuthenticationSuccessHandler authSuccessHandler;
+    private final AuthenticationFailureHandler authFailureHandler;
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http
-                .csrf(AbstractHttpConfigurer::disable)
+                //.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize ->
                         authorize.requestMatchers("/","/index.html").permitAll()
                                 .requestMatchers("/login").permitAll()
@@ -40,8 +45,8 @@ public class SecurityConfig {
                 )
                 .formLogin(formLogin -> formLogin
                         .loginPage("/login")
-                        //.successHandler(authSuccessHandler)
-                        //.failureHandler(authFailureHandler)
+                        .successHandler(authSuccessHandler)
+                        .failureHandler(authFailureHandler)
                 )
                 .logout(logout -> logout
                         .logoutSuccessUrl("/login?logout")
