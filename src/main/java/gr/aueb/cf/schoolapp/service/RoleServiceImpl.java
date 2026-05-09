@@ -18,7 +18,7 @@ public class RoleServiceImpl implements IRoleService{
     private final Mapper mapper;
 
     @Override
-    public List<RoleReadOnlyDTO> findALlRolesSortedByName() {
+    public List<RoleReadOnlyDTO> findAllRolesSortedByName() {
         return roleRepository.findAllByOrderByNameAsc()
                 .stream()
                 .map(mapper::mapToRoleReadOnlyDTO)
