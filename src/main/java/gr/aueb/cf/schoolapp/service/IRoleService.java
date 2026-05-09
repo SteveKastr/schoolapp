@@ -5,5 +5,5 @@ import gr.aueb.cf.schoolapp.dto.RoleReadOnlyDTO;
 import java.util.List;
 
 public interface IRoleService {
-    List<RoleReadOnlyDTO> findALlRolesSortedByName();
+    List<RoleReadOnlyDTO> findAllRolesSortedByName();
 }
