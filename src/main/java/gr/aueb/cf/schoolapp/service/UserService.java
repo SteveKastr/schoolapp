@@ -37,7 +37,7 @@ public class UserService implements IUserService{
             User user = mapper.mapToUserEntity(userInsertDTO);
             user.setPassword(passwordEncoder.encode(userInsertDTO.password()));
             Role role = roleRepository.findById(userInsertDTO.roleId())
-                    .orElseThrow(() -> new EntityInvalidArgumentException("Role id=" +userInsertDTO.roleId() + " already exists"));
+                    .orElseThrow(() -> new EntityInvalidArgumentException("Role id=" +userInsertDTO.roleId() + " invalid"));
 
             role.addUser(user);
             userRepository.save(user);
