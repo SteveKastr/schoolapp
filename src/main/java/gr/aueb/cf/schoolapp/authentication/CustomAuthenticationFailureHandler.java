@@ -30,7 +30,7 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
         String ipAddress = getClientIp(request);
         String userAgent = request.getHeader("User-Agent");
 
-        log.warn("Authentication failed for user {} from IP {} and userAgent={}",
+        log.warn("Authentication failed for user={} from IP={} and userAgent={}",
                 username, ipAddress, userAgent);
 
         if (exception instanceof DisabledException) {
