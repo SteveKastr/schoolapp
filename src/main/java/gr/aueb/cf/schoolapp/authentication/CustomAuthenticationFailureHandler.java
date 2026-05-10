@@ -30,8 +30,10 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
         String ipAddress = getClientIp(request);
         String userAgent = request.getHeader("User-Agent");
 
-        log.warn("Authentication failed for user={} from IP={} and userAgent={}",
-                username, ipAddress, userAgent);
+        log.warn("Authentication failed for username={} from ip={} and userAgent={}",
+                username,
+                ipAddress,
+                userAgent);
 
         if (exception instanceof DisabledException) {
             redirectStrategy.sendRedirect(request, response, "/login?disabled");
@@ -40,17 +42,17 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
         } else {
             redirectStrategy.sendRedirect(request, response, "/login?error");
         }
-
     }
 
     private String getClientIp(HttpServletRequest request) {
 
-        // if behind a proxy, get the real IP address
+        // If behind a proxy, get the real IP address
         String xfHeader = request.getHeader("X-FORWARDED-FOR");
 
         if (xfHeader == null) {
             return request.getRemoteAddr();
         }
-        return xfHeader.split(",")[0]; //first IP
+
+        return xfHeader.split(",")[0];  // first IP address
     }
 }

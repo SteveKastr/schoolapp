@@ -8,8 +8,8 @@ import gr.aueb.cf.schoolapp.dto.UserReadOnlyDTO;
 import gr.aueb.cf.schoolapp.model.Role;
 import gr.aueb.cf.schoolapp.service.IRoleService;
 import gr.aueb.cf.schoolapp.service.IUserService;
-import gr.aueb.cf.schoolapp.service.UserService;
 import gr.aueb.cf.schoolapp.service.RoleServiceImpl;
+import gr.aueb.cf.schoolapp.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.swing.plaf.PanelUI;
+import java.security.PublicKey;
 import java.util.List;
 
 @Controller
@@ -32,16 +34,15 @@ public class UserController {
     private final IRoleService roleService;
 
     @GetMapping("/register")
-    public String getUserForm(Model model){
+    public String getUserForm(Model model) {
         model.addAttribute("userInsertDTO", UserInsertDTO.empty());
         return "user-form";
     }
 
     @PostMapping("/register")
-    public String registerUser(@Valid @ModelAttribute("userInsertDTO")
-                               UserInsertDTO userInsertDTO, BindingResult bindingResult,
-                               RedirectAttributes redirectAttributes, Model model) {
-        // user validator TODO
+    public String registerUser(@Valid @ModelAttribute("userInsertDTO") UserInsertDTO userInsertDTO,
+                               BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
+        // user validator business rules TODO
 
         if (bindingResult.hasErrors()) {
             return "user-form";
@@ -51,8 +52,7 @@ public class UserController {
             UserReadOnlyDTO readOnlyDTO = userService.saveUser(userInsertDTO);
             redirectAttributes.addFlashAttribute("userReadOnlyDTO", readOnlyDTO);
             return "redirect:/users/success";
-
-        }catch (EntityAlreadyExistsException | EntityInvalidArgumentException e) {
+        } catch (EntityAlreadyExistsException | EntityInvalidArgumentException e) {
             model.addAttribute("errorMessage", e.getMessage());
             return "user-form";
         }
@@ -67,4 +67,5 @@ public class UserController {
     public List<RoleReadOnlyDTO> roles() {
         return roleService.findAllRolesSortedByName();
     }
+
 }

@@ -38,7 +38,6 @@ public class Capability {
         role.getCapabilities().add(this);
     }
 
-
     public void removeRole(Role role) {
         roles.remove(role);
         role.getCapabilities().remove(this);

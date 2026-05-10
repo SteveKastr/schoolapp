@@ -32,8 +32,9 @@ public class Role {
     @Getter(AccessLevel.PROTECTED)
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "roles_capabilities",
-              joinColumns = @JoinColumn(name = "role_id"),
-              inverseJoinColumns = @JoinColumn(name = "capability_id"))
+            joinColumns = @JoinColumn(name = "role_id"),
+            inverseJoinColumns = @JoinColumn(name = "capability_id")
+    )
     private Set<Capability> capabilities = new HashSet<>();
 
     public Set<Capability> getAllCapabilities() {

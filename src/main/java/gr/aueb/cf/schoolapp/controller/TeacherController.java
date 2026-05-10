@@ -77,46 +77,46 @@ public class TeacherController {
         }
     }
 
-    @GetMapping({ "","/" })
+
+    @GetMapping({ "", "/" })
     public String getPaginatedTeachers(@PageableDefault(page = 0, size = 5, sort = "lastname") Pageable pageable,
                                        Model model) {
 
-      //  Page<TeacherReadOnlyDTO> teachersPage = teacherService.getPaginatedTeachers(pageable);
+//        Page<TeacherReadOnlyDTO> teachersPage = teacherService.getPaginatedTeachers(pageable);
         Page<TeacherReadOnlyDTO> teachersPage = teacherService.getPaginatedTeachersDeletedFalse(pageable);
-
 //        Page<TeacherReadOnlyDTO> teachersPage = new PageImpl<>(Stream.of(
-//                new TeacherReadOnlyDTO("ab123","Pavlos","Pavlopoulos", "1234", "Athens"),
-//                new TeacherReadOnlyDTO("ab124","Nikos","Charos", "1235", "Athens"),
-//                new TeacherReadOnlyDTO("ab125","George","Petrou", "1236", "Athens"))
+//                        new TeacherReadOnlyDTO("ab123", "Pavlos", "Pavlopoulos", "1234", "Athens"),
+//                        new TeacherReadOnlyDTO("ab124", "Nikos", "Charos", "1234", "Athens"),
+//                        new TeacherReadOnlyDTO("ab125", "Kostas", "Lazaris", "1234", "Athens"),
+//                        new TeacherReadOnlyDTO("ab126", "George", "petrou", "1234", "Athens"),
+//                        new TeacherReadOnlyDTO("ab127", "Lydia", "Spiropoulou", "1234", "Athens"))
 //                .sorted(Comparator.comparing(TeacherReadOnlyDTO::lastname))
 //                .skip(pageable.getOffset())
 //                .limit(pageable.getPageSize())
-//                .toList(), pageable, 3);
-
+//                .toList(), pageable, 5
+//        );
         model.addAttribute("teachers", teachersPage.getContent());
         model.addAttribute("page", teachersPage);
         return "teachers";
     }
 
-    @GetMapping("/edit/{uuid}")  //path variable
+    @GetMapping("/edit/{uuid}")         // path variable
     public String getTeacherEdit(@PathVariable UUID uuid, Model model) {
         try {
-           // TeacherEditDTO teacherEditDTO = teacherService.getTeacherByUUID(uuid);
+//            TeacherEditDTO teacherEditDTO = teacherService.getTeacherByUUID(uuid);
             TeacherEditDTO teacherEditDTO = teacherService.getTeacherByUUIDDeletedFalse(uuid);
             model.addAttribute("teacherEditDTO", teacherEditDTO);
-
         } catch (EntityNotFoundException e) {
-         model.addAttribute("errorMessage", e.getMessage());
+            model.addAttribute("errorMessage", e.getMessage());
         }
         return "teacher-edit";
     }
 
     @PostMapping("/edit")
     public String updateTeacher(@Valid @ModelAttribute("teacherEditDTO") TeacherEditDTO teacherEditDTO,
-                                BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
+                                BindingResult bindingResult, RedirectAttributes redirectAttributes,  Model model) {
 
         teacherEditValidator.validate(teacherEditDTO, bindingResult);
-
         if (bindingResult.hasErrors()) {
             return "teacher-edit";
         }
@@ -143,7 +143,8 @@ public class TeacherController {
     }
 
     @PostMapping("/delete/{uuid}")
-    public String deleteTeacher(@PathVariable UUID uuid, Model model, RedirectAttributes redirectAttributes) {
+    public String deleteTeacher(@PathVariable UUID uuid, Model model,
+                                RedirectAttributes redirectAttributes) {
 
         try {
             TeacherReadOnlyDTO readOnlyDTO = teacherService.deleteTeacherByUUID(uuid);

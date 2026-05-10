@@ -77,6 +77,8 @@
         </rollingPolicy>
     </appender>
 
+
+
     <!-- Loggers for Tomcat -->
     <logger name="org.apache.catalina" level="DEBUG" additivity="false">
         <appender-ref ref="TomcatLogs"/>
@@ -97,7 +99,7 @@
         <appender-ref ref="HikariLogs"/>
     </logger>
 
-    <!-- SQL Logger  -->
+    <!-- SQL Logger -->
     <logger name="org.hibernate.SQL" level="DEBUG" additivity="false">
         <appender-ref ref="SQLLogs"/>
     </logger>

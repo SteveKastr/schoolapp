@@ -24,12 +24,12 @@ public class User extends AbstractEntity implements UserDetails {
     private Long id;
 
     @Column(unique = true, nullable = false, updatable = false, columnDefinition = "BINARY(16)")
-    private UUID uuid;
+    private UUID uuid = UUID.randomUUID();
 
     @Column(unique = true, nullable = false)
     private String username;
 
-    @Column(nullable = false)  //Hash, BCrypt
+    @Column(nullable = false)       // Hash, BCrypt
     private String password;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -41,18 +41,14 @@ public class User extends AbstractEntity implements UserDetails {
         this.password = password;
     }
 
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
+        Set<GrantedAuthority> grantedAuthorities =  new HashSet<>();
         grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_" + role.getName()));
         role.getCapabilities()
                 .forEach(capability -> grantedAuthorities.add(new SimpleGrantedAuthority(capability.getName())));
         return grantedAuthorities;
-
     }
-
-
 
     @Override
     public boolean isAccountNonExpired() {

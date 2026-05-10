@@ -18,33 +18,30 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class UserService implements IUserService{
-
+public class UserService implements IUserService {
     private final UserRepository userRepository;
     private final Mapper mapper;
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
 
-
     @Override
     @Transactional(rollbackFor = { EntityAlreadyExistsException.class, EntityInvalidArgumentException.class })
-    public UserReadOnlyDTO saveUser(UserInsertDTO userInsertDTO) throws EntityAlreadyExistsException, EntityInvalidArgumentException {
-
+    public UserReadOnlyDTO saveUser(UserInsertDTO userInsertDTO)
+            throws EntityAlreadyExistsException, EntityInvalidArgumentException {
         try {
             if (userRepository.findByUsername(userInsertDTO.username()).isPresent()) {
-                throw new EntityAlreadyExistsException("User with username=" + userInsertDTO.username() + " already exists.");
+                throw new EntityAlreadyExistsException("User with username=" + userInsertDTO.username() + " already exists");
             }
             User user = mapper.mapToUserEntity(userInsertDTO);
             user.setPassword(passwordEncoder.encode(userInsertDTO.password()));
             Role role = roleRepository.findById(userInsertDTO.roleId())
-                    .orElseThrow(() -> new EntityInvalidArgumentException("Role id=" +userInsertDTO.roleId() + " invalid"));
-
+                    .orElseThrow(() -> new EntityInvalidArgumentException("Role id=" + userInsertDTO.roleId() + " invalid"));
             role.addUser(user);
             userRepository.save(user);
             log.info("Save succeeded for user with username={}.", userInsertDTO.username());
             return mapper.mapToUserReadOnlyDTO(user);
         } catch (EntityAlreadyExistsException e) {
-            log.error("Save failed. User with username={}  already exists", userInsertDTO.username());
+            log.error("Save failed. User with username={} already exists", userInsertDTO.username());
             throw e;
         } catch (EntityInvalidArgumentException e) {
             log.error("Save failed. Invalid arguments for user with username={}", userInsertDTO.username());

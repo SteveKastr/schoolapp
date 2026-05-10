@@ -21,7 +21,6 @@ import java.util.Set;
 @Component
 @Slf4j
 public class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
-
     private final RequestCache requestCache = new HttpSessionRequestCache();
     private final RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
@@ -30,12 +29,12 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
                                         HttpServletResponse response,
                                         Authentication authentication) throws IOException, ServletException {
 
-        log.info("User {} logged in successfully", authentication.getName()); //username
+        log.info("User {} logged in successfully", authentication.getName());   // username
 
         SavedRequest savedRequest = requestCache.getRequest(request, response);
 
         if (savedRequest != null) {
-           // response.sendRedirect(savedRequest.getRedirectUrl()); // relative URL
+//            response.sendRedirect(savedRequest.getRedirectUrl());   // relative URL
             redirectStrategy.sendRedirect(request, response, savedRequest.getRedirectUrl());
         }
 
@@ -50,6 +49,5 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 //        }
 
         redirectStrategy.sendRedirect(request, response, "/teachers");
-
     }
 }

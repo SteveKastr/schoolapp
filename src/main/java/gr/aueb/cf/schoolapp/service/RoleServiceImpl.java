@@ -12,8 +12,7 @@ import java.util.List;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class RoleServiceImpl implements IRoleService{
-
+public class RoleServiceImpl implements IRoleService {
     private final RoleRepository roleRepository;
     private final Mapper mapper;
 

@@ -7,5 +7,5 @@ import gr.aueb.cf.schoolapp.dto.UserReadOnlyDTO;
 
 public interface IUserService {
     UserReadOnlyDTO saveUser(UserInsertDTO userInsertDTO)
-        throws EntityAlreadyExistsException, EntityInvalidArgumentException;
+            throws EntityAlreadyExistsException, EntityInvalidArgumentException;
 }

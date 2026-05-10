@@ -14,6 +14,11 @@ public class Mapper {
         return new Teacher(null, null, teacherInsertDTO.vat(), teacherInsertDTO.firstname(), teacherInsertDTO.lastname(), null);
     }
 
+    public TeacherEditDTO mapToTeacherEditDTO(Teacher teacher) {
+        return new TeacherEditDTO(teacher.getUuid(), teacher.getFirstname(),
+                teacher.getLastname(), teacher.getVat(), teacher.getRegion().getId());
+    }
+
     public TeacherReadOnlyDTO mapToTeacherReadOnlyDTO(Teacher teacher) {
         return new TeacherReadOnlyDTO(teacher.getUuid().toString(), teacher.getFirstname(), teacher.getLastname(),
                 teacher.getVat(), teacher.getRegion().getName());
@@ -21,11 +26,6 @@ public class Mapper {
 
     public RegionReadOnlyDTO mapToRegionReadOnlyDTO(Region region) {
         return new RegionReadOnlyDTO(region.getId(), region.getName());
-    }
-
-    public TeacherEditDTO mapToTeacherEditDTO(Teacher teacher) {
-        return new TeacherEditDTO(teacher.getUuid(), teacher.getFirstname(),
-                teacher.getLastname(), teacher.getVat(), teacher.getRegion().getId());
     }
 
     public User mapToUserEntity(UserInsertDTO userInsertDTO) {

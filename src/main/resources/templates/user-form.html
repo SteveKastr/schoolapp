@@ -30,7 +30,10 @@
                 </div>
 
                 <div class="card-body">
-                    <form method="post" th:object="${userInsertDTO}" th:action="@{/users/register}" >
+                    <form method="post"
+                          th:object="${userInsertDTO}"
+                          th:action="@{/users/register}" >
+
                         <!-- Username Field -->
                         <div class="mb-3">
                             <label th:for="username" class="form-label">Username</label>
