@@ -25,11 +25,8 @@ public class TeacherInsertValidator implements Validator {
         TeacherInsertDTO teacherInsertDTO = (TeacherInsertDTO) target;
 
         if (teacherInsertDTO.vat() != null && teacherService.isTeacherExists(teacherInsertDTO.vat())) {
-
             log.warn("Save failed. Teacher with vat={} already exists", teacherInsertDTO.vat());
             errors.rejectValue("vat", "vat.teacher.exists");
-
         }
-
     }
 }
