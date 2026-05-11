@@ -15,7 +15,7 @@
     <h1 class="page-title">Teachers Management</h1>
 
     <div sec:authorize="hasAuthority('INSERT_TEACHER')" class="action-buttons">
-<!--    <div class="action-buttons">-->
+        <!--    <div class="action-buttons">-->
         <a th:href="@{/teachers/insert}" class="btn btn-primary">
             <i class="bi bi-plus-circle"></i> Insert Teacher
         </a>
@@ -28,28 +28,28 @@
     <table sec:authorize="hasAuthority('VIEW_TEACHERS')">
         <thead>
         <tr>
-<!--                <th>ID</th>-->
+            <!--                <th>ID</th>-->
             <th>UUID</th>
             <th>Firstname</th>
             <th>Lastname</th>
             <th>VAT</th>
             <th>Region</th>
             <th sec:authorize="hasAnyAuthority('EDIT_TEACHER', 'DELETE_TEACHER')">Actions</th>
-<!--            <th>Actions</th>-->
+            <!--            <th>Actions</th>-->
         </tr>
         </thead>
         <tbody>
-<!--        sec:authorize="hasRole('ADMIN')-->
+        <!--        sec:authorize="hasRole('ADMIN')-->
         <!-- Iterate over the content of the current page -->
         <tr th:each="teacher : ${teachers}">
-<!--                <td th:text="${teacher.id}"></td>-->
+            <!--                <td th:text="${teacher.id}"></td>-->
             <td th:text="${teacher.uuid}"></td>
             <td th:text="${teacher.firstname}"></td>
             <td th:text="${teacher.lastname}"></td>
             <td th:text="${teacher.vat}"></td>
             <td th:text="${teacher.region}"></td>
-            <td sec:authorize="hasAnyAuthority('EDIT_TEACHER, 'DELETE_TEACHER'')">
-<!--            <td>-->
+            <td sec:authorize="hasAnyAuthority('EDIT_TEACHER', 'DELETE_TEACHER')">
+                <!--            <td>-->
                 <a th:href="@{/teachers/edit/{uuid}(uuid=${teacher.uuid})}"
                    class="btn btn-sm btn-outline-primary">Edit
                 </a>
